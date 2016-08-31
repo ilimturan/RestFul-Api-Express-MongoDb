@@ -1,4 +1,3 @@
-//var config = require('../config/config.db');
 var mongoose = require('mongoose');
 
 var Schema   = mongoose.Schema;
