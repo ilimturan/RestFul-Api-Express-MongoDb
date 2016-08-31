@@ -5,7 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-//mongoose.connect("mongodb://localhost/node_dev_db");
+var config = require('config');
+var mongoDbConfig = config.get("mongodb");
+
+mongoose.connect("mongodb://"+mongoDbConfig.host+":"+mongoDbConfig.port+"/"+mongoDbConfig.dbName);
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
