@@ -4,11 +4,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
 var config = require('config');
+
+var mongoose = require('mongoose');
 var mongoDbConfig = config.get("mongodb");
 
-mongoose.connect("mongodb://"+mongoDbConfig.host+":"+mongoDbConfig.port+"/"+mongoDbConfig.dbName);
+var redis = require("redis");
+var redisConfig = config.get("redis");
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -16,6 +18,19 @@ var loggers = require('./routes/loggers');
 var useractions = require('./routes/userActions');
 
 var app = express();
+
+try {
+    mongoose.connect("mongodb://"+mongoDbConfig.host+":"+mongoDbConfig.port+"/"+mongoDbConfig.dbName);
+}catch (e){
+    console.log("Mongodb connection error");
+    console.log(e);
+}
+try {
+    var redisClient = redis.createClient(redisConfig.port, redisConfig.host);
+}catch (e){
+    console.log("Redis connection error");
+    console.log(e);
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
